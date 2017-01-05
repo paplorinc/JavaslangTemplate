@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TextEditorBench" type="jmh-id" factoryName="Jmh" program-parameters="pap.lorinc.TextEditorBench.*" working-dir="$PROJECT_DIR$" benchmark-type="CLASS" benchmark-class="pap.lorinc.TextEditorBench">
+    <module name="JavaslangTemplate_jmh" />
+    <RunnerSettings RunnerId="JProfiler">
+      <option name="WINDOW" value="false" />
+    </RunnerSettings>
+    <method />
+  </configuration>
+</component>
