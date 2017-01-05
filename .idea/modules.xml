@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaslangTemplate.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaslangTemplate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaslangTemplate_jmh.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaslangTemplate_jmh.iml" group="JavaslangTemplate" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaslangTemplate_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaslangTemplate_main.iml" group="JavaslangTemplate" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaslangTemplate_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaslangTemplate_test.iml" group="JavaslangTemplate" />
+    </modules>
+  </component>
+</project>
