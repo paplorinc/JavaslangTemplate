@@ -12,7 +12,10 @@
     <orderEntry type="module" module-name="JavaslangTemplate_main" />
     <orderEntry type="library" name="Gradle: io.javaslang:javaslang:2.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.openjdk.jol:jol-core:0.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M3" level="project" />
     <orderEntry type="library" name="Gradle: io.javaslang:javaslang-match:2.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.opentest4j:opentest4j:1.0.0-M1" level="project" />
+    <orderEntry type="library" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M3" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="JavaslangTemplate_main" />
 </module>
