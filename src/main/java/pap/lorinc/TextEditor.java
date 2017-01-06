@@ -13,6 +13,7 @@ import static javaslang.collection.Iterator.continually;
 
 public class TextEditor {
     private static final int SIZE = 1_000;
+    private static final char REPLACEMENT = '.';
     static final String STRING_TEXT = continually(TextEditor::randomChar).take(SIZE).mkString();
     static final Vector<Character> VECTOR_TEXT = Vector.ofAll(STRING_TEXT.toCharArray());
 
@@ -28,11 +29,11 @@ public class TextEditor {
 
     static List<String> editString(String t) {
         return editAll(t, t.length(),
-                i -> t.substring(0, i) + " " + t.substring(i + 1));
+                i -> t.substring(0, i) + REPLACEMENT + t.substring(i + 1));
     }
     static List<Vector<Character>> editVector(Vector<Character> t) {
         return editAll(t, t.length(),
-                i -> t.update(i, ' '));
+                i -> t.update(i, REPLACEMENT));
     }
 
     private static <T> List<T> editAll(T text, int length, IntFunction<T> replacer) {
