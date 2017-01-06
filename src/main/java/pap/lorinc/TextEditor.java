@@ -1,14 +1,14 @@
 package pap.lorinc;
 
+import javaslang.collection.Seq;
 import javaslang.collection.Vector;
 import org.openjdk.jol.info.GraphLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntFunction;
 
 import static java.lang.String.format;
+import static javaslang.API.List;
 import static javaslang.collection.Iterator.continually;
 
 public class TextEditor {
@@ -18,8 +18,8 @@ public class TextEditor {
     static final Vector<Character> VECTOR_TEXT = Vector.ofAll(STRING_TEXT.toCharArray());
 
     public static void main(String... args) {
-        final List<String> string = editString(STRING_TEXT);
-        final List<Vector<Character>> vector = editVector(VECTOR_TEXT);
+        final Seq<String> string = editString(STRING_TEXT);
+        final Seq<Vector<Character>> vector = editVector(VECTOR_TEXT);
 
         if (SIZE < 100) { System.out.println(string); }
         System.out.println(format("for %d elements String is %.1f× larger than Vector!",
@@ -27,23 +27,20 @@ public class TextEditor {
                 (float) byteSize(string) / byteSize(vector)));
     }
 
-    static List<String> editString(String t) {
-        return editAll(t, t.length(),
+    static Seq<String> editString(String t) {
+        return editAllChars(t, t.length(),
                 i -> t.substring(0, i) + REPLACEMENT + t.substring(i + 1));
     }
-    static List<Vector<Character>> editVector(Vector<Character> t) {
-        return editAll(t, t.length(),
+    static Seq<Vector<Character>> editVector(Vector<Character> t) {
+        return editAllChars(t, t.length(),
                 i -> t.update(i, REPLACEMENT));
     }
 
-    private static <T> List<T> editAll(T text, int length, IntFunction<T> replacer) {
-        final List<T> history = new ArrayList<>(length);
-
-        history.add(text);
+    private static <T> Seq<T> editAllChars(T text, int length, IntFunction<T> replacer) {
+        Seq<T> history = List(text);
         for (int i = 0; i < length; i++) {
-            history.add(replacer.apply(i));
+            history = history.prepend(replacer.apply(i));
         }
-
         return history;
     }
 
