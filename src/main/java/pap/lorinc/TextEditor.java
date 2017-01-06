@@ -1,11 +1,11 @@
 package pap.lorinc;
 
+import javaslang.Function2;
 import javaslang.collection.Seq;
 import javaslang.collection.Vector;
 import org.openjdk.jol.info.GraphLayout;
 
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.IntFunction;
 
 import static java.lang.String.format;
 import static javaslang.API.List;
@@ -27,19 +27,19 @@ public class TextEditor {
                 (float) byteSize(string) / byteSize(vector)));
     }
 
-    static Seq<String> editString(String t) {
-        return editAllChars(t, t.length(),
-                i -> t.substring(0, i) + REPLACEMENT + t.substring(i + 1));
+    static Seq<String> editString(String text) {
+        return editAllChars(text, text.length(),
+                (t, i) -> t.substring(0, i) + REPLACEMENT + t.substring(i + 1));
     }
-    static Seq<Vector<Character>> editVector(Vector<Character> t) {
-        return editAllChars(t, t.length(),
-                i -> t.update(i, REPLACEMENT));
+    static Seq<Vector<Character>> editVector(Vector<Character> text) {
+        return editAllChars(text, text.length(),
+                (t, i) -> t.update(i, REPLACEMENT));
     }
 
-    private static <T> Seq<T> editAllChars(T text, int length, IntFunction<T> replacer) {
+    private static <T> Seq<T> editAllChars(T text, int length, Function2<T, Integer, T> replacer) {
         Seq<T> history = List(text);
         for (int i = 0; i < length; i++) {
-            history = history.prepend(replacer.apply(i));
+            history = history.prepend(replacer.apply(history.head(), i));
         }
         return history;
     }
