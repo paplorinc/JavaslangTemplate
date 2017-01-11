@@ -1,7 +1,7 @@
 package pap.lorinc;
 
 import javaslang.Function2;
-import javaslang.collection.Seq;
+import javaslang.collection.Stack;
 import javaslang.collection.Vector;
 import org.openjdk.jol.info.GraphLayout;
 
@@ -19,8 +19,8 @@ public class TextEditor {
     static final Vector<Character> VECTOR_TEXT = Vector.ofAll(STRING_TEXT.toCharArray());
 
     public static void main(String... args) {
-        final Seq<String> string = editString(STRING_TEXT);
-        final Seq<Vector<Character>> vector = editVector(VECTOR_TEXT);
+        final Stack<String> string = editString(STRING_TEXT);
+        final Stack<Vector<Character>> vector = editVector(VECTOR_TEXT);
 
         if (SIZE < 100) { System.out.println(string); }
         System.out.println(format("for %d elements String is %.1f× larger than Vector!",
@@ -28,23 +28,27 @@ public class TextEditor {
                 (float) byteSize(string) / byteSize(vector)));
     }
 
-    static Seq<String> editString(String text) {
-        return editAllChars(text, text.length(),
-                (t, i) -> t.substring(0, i) + toLowerCase(t.charAt(i)) + t.substring(i + 1));
-    }
-    static Seq<Vector<Character>> editVector(Vector<Character> text) {
-        return editAllChars(text, text.length(),
-                (t, i) -> t.update(i, toLowerCase(t.get(i))));
+    static Stack<String> editString(String text) {
+        final Replacer<String> stringReplacer = (t, i) -> t.substring(0, i) + toLowerCase(t.charAt(i)) + t.substring(i + 1);
+        return editAllCharsAndReturnHistory(text, text.length(), stringReplacer);
     }
 
-    private static <T> Seq<T> editAllChars(T text, int length, Function2<T, Integer, T> replacer) {
-        Seq<T> history = List(text);
+    static Stack<Vector<Character>> editVector(Vector<Character> text) {
+        final Replacer<Vector<Character>> vectorReplacer = (t, i) -> t.update(i, toLowerCase(t.get(i)));
+        return editAllCharsAndReturnHistory(text, text.length(), vectorReplacer);
+    }
+
+    private static <Text> Stack<Text> editAllCharsAndReturnHistory(Text text, int length, Replacer<Text> replacer) {
+        Stack<Text> history = List(text);
         for (int i = 0; i < length; i++) {
-            history = history.prepend(replacer.apply(history.head(), i));
+            text = replacer.apply(text, i);
+            history = history.push(text);
         }
         return history;
     }
 
+    @FunctionalInterface
+    interface Replacer<Text> extends Function2<Text, Integer, Text> {}
     private static long byteSize(Object target) { return GraphLayout.parseInstance(target).totalSize(); }
     private static char randomChar() { return (char) ThreadLocalRandom.current().nextInt('A', 'Z'); }
 }
