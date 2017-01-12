@@ -1,7 +1,7 @@
 package pap.lorinc;
 
 import javaslang.Function2;
-import javaslang.collection.Stack;
+import javaslang.collection.Seq;
 import javaslang.collection.Vector;
 import org.openjdk.jol.info.GraphLayout;
 
@@ -19,8 +19,8 @@ public class TextEditor {
     static final Vector<Character> VECTOR_TEXT = Vector.ofAll(STRING_TEXT.toCharArray());
 
     public static void main(String... args) {
-        final Stack<String> string = editString(STRING_TEXT);
-        final Stack<Vector<Character>> vector = editVector(VECTOR_TEXT);
+        final Seq<String> string = editString(STRING_TEXT);
+        final Seq<Vector<Character>> vector = editVector(VECTOR_TEXT);
 
         if (SIZE < 100) { System.out.println(string); }
         System.out.println(format("for %d elements String is %.1f× larger than Vector!",
@@ -28,21 +28,21 @@ public class TextEditor {
                 (float) byteSize(string) / byteSize(vector)));
     }
 
-    static Stack<String> editString(String text) {
+    static Seq<String> editString(String text) {
         final Replacer<String> stringReplacer = (t, i) -> t.substring(0, i) + toLowerCase(t.charAt(i)) + t.substring(i + 1);
         return editAllCharsAndReturnHistory(text, text.length(), stringReplacer);
     }
 
-    static Stack<Vector<Character>> editVector(Vector<Character> text) {
+    static Seq<Vector<Character>> editVector(Vector<Character> text) {
         final Replacer<Vector<Character>> vectorReplacer = (t, i) -> t.update(i, toLowerCase(t.get(i)));
         return editAllCharsAndReturnHistory(text, text.length(), vectorReplacer);
     }
 
-    private static <Text> Stack<Text> editAllCharsAndReturnHistory(Text text, int length, Replacer<Text> replacer) {
-        Stack<Text> history = List(text);
+    private static <Text> Seq<Text> editAllCharsAndReturnHistory(Text text, int length, Replacer<Text> replacer) {
+        Seq<Text> history = List(text);
         for (int i = 0; i < length; i++) {
             text = replacer.apply(text, i);
-            history = history.push(text);
+            history = history.prepend(text);
         }
         return history;
     }
