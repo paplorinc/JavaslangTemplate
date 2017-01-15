@@ -1,21 +1,18 @@
 package pap.lorinc;
 
-import javaslang.Function2;
 import javaslang.collection.Seq;
 import javaslang.collection.Vector;
-import org.openjdk.jol.info.GraphLayout;
 
-import java.util.concurrent.ThreadLocalRandom;
-
-import static java.lang.Character.*;
+import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
-import static javaslang.API.List;
 import static javaslang.collection.Iterator.continually;
+import static pap.lorinc.Edits.editAllCharsAndReturnHistory;
+import static pap.lorinc.Memory.byteSize;
 
 @SuppressWarnings("ConstantConditions")
 public class TextEditor {
     private static final int SIZE = 1_000;
-    static final String STRING_TEXT = continually(TextEditor::randomChar).take(SIZE).mkString();
+    static final String STRING_TEXT = continually(Generator::randomUppercaseChar).take(SIZE).mkString();
     static final Vector<Character> VECTOR_TEXT = Vector.ofAll(STRING_TEXT.toCharArray());
 
     public static void main(String... args) {
@@ -37,18 +34,4 @@ public class TextEditor {
         final Replacer<Vector<Character>> vectorReplacer = (t, i) -> t.update(i, toLowerCase(t.get(i)));
         return editAllCharsAndReturnHistory(text, text.length(), vectorReplacer);
     }
-
-    private static <Text> Seq<Text> editAllCharsAndReturnHistory(Text text, int length, Replacer<Text> replacer) {
-        Seq<Text> history = List(text);
-        for (int i = 0; i < length; i++) {
-            text = replacer.apply(text, i);
-            history = history.prepend(text);
-        }
-        return history;
-    }
-
-    @FunctionalInterface
-    interface Replacer<Text> extends Function2<Text, Integer, Text> {}
-    private static long byteSize(Object target) { return GraphLayout.parseInstance(target).totalSize(); }
-    private static char randomChar() { return (char) ThreadLocalRandom.current().nextInt('A', 'Z'); }
 }
