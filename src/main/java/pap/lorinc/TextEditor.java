@@ -31,7 +31,7 @@ public class TextEditor {
     }
 
     static Seq<Vector<Character>> editVector(Vector<Character> text) {
-        final Replacer<Vector<Character>> vectorReplacer = (t, i) -> t.update(i, toLowerCase(t.get(i)));
+        final Replacer<Vector<Character>> vectorReplacer = (t, i) -> t.update(i, Character::toLowerCase);
         return editAllCharsAndReturnHistory(text, text.length(), vectorReplacer);
     }
 }
